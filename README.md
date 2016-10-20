@@ -15,8 +15,4 @@ data = {
     'TEST_DB_URL': 'URL for the testing database',
     'PROD_DB_URL': 'URL for the production database'
 }
-<<<<<<< HEAD
 ```
-=======
-```
->>>>>>> 2b1a3210d7889880ba56e1f79e9e8a2ef4821bf3
