@@ -91,3 +91,6 @@ ENV/
 
 # VS Code specifics
 .vscode/
+
+# Sensitive data
+data.py
