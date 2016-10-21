@@ -1,0 +1,6 @@
+/* Ugly, but less ugly than bootstrap's circle borders... */
+* {
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    border-radius: 0 !important;
+}
