@@ -94,3 +94,4 @@ ENV/
 
 # Sensitive data
 data.py
+*.sqlite
