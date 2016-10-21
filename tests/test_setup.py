@@ -8,11 +8,11 @@ class SetupTestCase(unittest.TestCase):
         self.app = create_app('testing')
         self.context = self.app.app_context()
         self.context.push()
-        #db.create_all()
+        db.create_all()
 
     def teardown(self):
-        #db.session_remove()
-        #db.drop_all()
+        db.session_remove()
+        db.drop_all()
         self.context.pop()
 
     def test_testsworking(self):
