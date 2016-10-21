@@ -5,7 +5,7 @@ from config import configs
 from .main import main as main_blueprint
 
 
-bootsrap = Bootstrap()
+bootstrap = Bootstrap()
 db = SQLAlchemy()
 
 def create_app(config_name):
@@ -14,7 +14,7 @@ def create_app(config_name):
     app.config.from_object(configs[config_name])
     configs[config_name].init_app(app)
 
-    bootsrap.init_app(app)
+    bootstrap.init_app(app)
     db.init_app(app)
     app.register_blueprint(main_blueprint)
 
