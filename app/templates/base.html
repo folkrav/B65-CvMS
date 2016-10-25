@@ -32,27 +32,6 @@
                 </button>
                 <a class="navbar-brand" href="/">CvMS</a>
             </div>
-                <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            {% if username %}
-                                {{ username }}
-                            {% else %}
-                                Visiteur
-                            {% endif %}
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            {% if username %}
-                                <li><a href="account">Mon compte</a></li>
-                                <li><a href="logout">Se déconnecter</a></li>
-                            {% else %}
-                                <li><a href="login">Se connecter</a></li>
-                                <li><a href="register">S'enregistrer</a></li>
-                            {% endif %}
-                        </ul>
-                    </li>
-                </ul>     
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="/content/articles">Articles</a></li>
@@ -66,8 +45,29 @@
                             <input type="text" class="form-control" placeholder="Recherche...">
                         </div>
                     </div>
-                </form>
+                </form> 
             </div>
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        {% if username %}
+                            {{ username }}
+                        {% else %}
+                            Visiteur
+                        {% endif %}
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        {% if username %}
+                            <li><a href="account">Mon compte</a></li>
+                            <li><a href="logout">Se déconnecter</a></li>
+                        {% else %}
+                            <li><a href="login">Se connecter</a></li>
+                            <li><a href="register">S'enregistrer</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
 {% endblock %}
