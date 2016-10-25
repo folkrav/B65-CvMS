@@ -7,10 +7,16 @@
 {{fixes.ie8()}}
 {%- endblock %}
 
-{% block styles -%}
+{% block metas %}
+    <meta charset="utf-8">
+{%- endblock %}
+
+{% block styles %}
     {{super()}}
     <link rel="stylesheet" type="text/css"
           href="{{url_for('static', filename='css/global.css')}}">
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='css/non-responsive.css')}}">
 {% endblock %}
 
 {% block body %}
@@ -34,7 +40,7 @@
                     <li><a href="/">Vidéos</a></li>
                     <li><a href="/"></a></li>
                 </ul>
-                <form class="navbar-form navbar-left hidden-sm hidden-xs">
+                <form class="navbar-form">
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Recherche">
                     </div>
