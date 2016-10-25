@@ -95,5 +95,5 @@ ENV/
 # Sensitive data
 data.py
 *.sqlite
-*.wsgi
-.htaccess
+wsgi.py
+
