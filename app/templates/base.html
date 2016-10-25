@@ -32,21 +32,6 @@
                 </button>
                 <a class="navbar-brand" href="/">CvMS</a>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a href="/content/articles">Articles</a></li>
-                    <li><a href="/content/images">Images</a></li>
-                    <li><a href="/content/videos">Vidéos</a></li>
-                </ul>
-                <form class="navbar-form navbar-right" role="search" method="GET" action="search">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
-                            <input type="text" class="form-control" placeholder="Recherche...">
-                        </div>
-                    </div>
-                </form> 
-            </div>
             <ul class="nav navbar-nav">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -68,6 +53,21 @@
                     </ul>
                 </li>
             </ul>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/content/articles">Articles</a></li>
+                    <li><a href="/content/images">Images</a></li>
+                    <li><a href="/content/videos">Vidéos</a></li>
+                </ul>
+                <form class="navbar-form navbar-right" role="search" method="GET" action="search">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                            <input type="text" class="form-control" placeholder="Recherche...">
+                        </div>
+                    </div>
+                </form> 
+            </div>
         </div>
     </div>
 {% endblock %}
