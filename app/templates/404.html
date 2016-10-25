@@ -1,8 +1,7 @@
 {%- extends "base.html" %}
 
-{% block content %}
-<div>
-    <h3>Error 404</h3>
-    <p>Page not found</p>
-</div>
+{% block contents %}
+{{super()}}
+<div class="page-header"><h1>Oups... erreur 404.</h1></div>
+<p>Page introuvable.</p>
 {%- endblock %}

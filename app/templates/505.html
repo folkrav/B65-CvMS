@@ -1,8 +1,7 @@
 {%- extends "base.html" %}
 
-{% block content %}
-<div>
-    <h3>Error 500</h3>
-    <p>Internal server error</p>
-</div>
+{% block contents %}
+{{super()}}
+<div class="page-header"><h1>Code 505</h1></div>
+<p>Parce que le navigateur est ancien. An-cien.</p>
 {%- endblock %}
