@@ -31,7 +31,7 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(128), nullable=False)
     register_date = db.Column(db.DateTime, default=datetime.utcnow)
     last_visit = db.Column(db.DateTime)
-    activated = db.Column(db.Boolean, default=False)
+    activated = db.Column(db.Boolean, default=True)
     privileges = db.relationship('PrivilegeGroup', secondary=users_privileges)
 
     def __init__(self, name=None, username=None, email=None, password=None):
