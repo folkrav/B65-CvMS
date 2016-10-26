@@ -20,7 +20,7 @@
 {% endblock %}
 
 {% block navbar %}
-    <div class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="navbar navbar-inverse navbar-static-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle"
@@ -30,7 +30,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/">CvMS</a>
+                <a class="navbar-brand" href="{{ url_for('main.index') }}">CvMS</a>
             </div>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
@@ -61,13 +61,13 @@
                     <li><a href="/tags">Tags</a></li>
                 </ul>
                 <form class="navbar-form" role="search">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search" name="q">
-            <div class="input-group-btn">
-                <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-            </div>
-        </div>
-        </form>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -76,13 +76,16 @@
 {% block content %}
     {% block maindiv %}
     <div class="container" id="contentarea">
-        {% for message in get_flashed_messages() %}
-        <div class="alert alert-warning">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            {{ message }}
-        </div>
-        {% endfor %}
-
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
         {% block contents %}{% endblock %}
     </div>
     {% endblock %}

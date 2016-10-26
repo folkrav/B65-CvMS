@@ -5,6 +5,10 @@
 
 {% block contents %}
 {{super()}}
-<div class="page-header col-md-offset-1"><h1>Enregistrement</h1></div>
-<div class="col-md-10 col-md-offset-1">{{ wtf.quick_form(form) }}</div>
+<div class="page-header"><h1>Créer un nouveau compte</h1></div>
+<div class="panel panel-default col-md-10 col-md-offset-1">
+    <div class="panel-body">
+        {{ wtf.quick_form(form) }}
+    </div>
+</div>
 {%- endblock %}

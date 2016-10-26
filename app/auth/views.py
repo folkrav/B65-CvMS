@@ -13,7 +13,7 @@ def login():
         if user is not None and user.check_password(form.password.data):
             login_user(user, remember=form.remember.data)
             return redirect(url_for('main.index'))
-        flash('Mauvaises informations de connection.')
+        flash('Mauvaises informations de connection.', 'danger')
 
     return render_template('auth/login.html', form=form)
 
@@ -25,7 +25,7 @@ def register():
                     email=form.email.data, password=form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('Compte créé! Vous pouvez maintenant vous connecter.')
+        flash('Compte créé! Vous pouvez maintenant vous connecter.', 'success')
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', form=form)
 
@@ -33,5 +33,5 @@ def register():
 @login_required
 def logout():
     logout_user()
-    flash('Déconnexion réussie.')
+    flash('Déconnexion réussie.', 'success')
     return redirect(url_for('main.index'))
