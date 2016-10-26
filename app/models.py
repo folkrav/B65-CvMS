@@ -1,7 +1,7 @@
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-from flask_login import UserMixin
+from flask_login import UserMixin, AnonymousUserMixin
 
 
 users_privileges = db.Table('users_privileges', db.Model.metadata,
@@ -20,6 +20,18 @@ article_tags = db.Table('article_tags', db.Model.metadata,
     db.Column('id_article', db.Integer, db.ForeignKey('articles.id')),
     db.Column('id_tag', db.Integer, db.ForeignKey('tags.id'))
 )
+ 
+
+class PrivilegeGroup(db.Model):
+    __tablename__ = 'privilege_groups'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), nullable=False)
+    description = db.Column(db.String(192))
+
+    AUTHENTICATED = 1
+    CREATOR = 2
+    MODERATOR = 3
+    ADMINISTRATOR = 4
 
 
 class User(db.Model, UserMixin):
@@ -34,11 +46,13 @@ class User(db.Model, UserMixin):
     activated = db.Column(db.Boolean, default=True)
     privileges = db.relationship('PrivilegeGroup', secondary=users_privileges)
 
-    def __init__(self, name=None, username=None, email=None, password=None):
-        self.name = name
-        self.username = username
-        self.email = email
-        self.password = password
+    def __init__(self, **kwargs):
+        super(User, self).__init__(**kwargs)
+        if self.privileges is None:
+            self.privileges.append(PrivilegeGroup.get(PrivilegeGroup.AUTHENTICATED))
+
+    def can(self, privilege):
+        return PrivilegeGroup.query.get(privilege) in self.privileges
 
     @property
     def password(self):
@@ -50,17 +64,6 @@ class User(db.Model, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
-
-from app import login
-@login.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-
-class PrivilegeGroup(db.Model):
-    __tablename__ = 'privilege_groups'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), nullable=False)
-    description = db.Column(db.String(192))
 
 
 class Article(db.Model):
@@ -98,3 +101,18 @@ class ArticleCategory(db.Model):
     name = db.Column(db.String(64))
     description = db.Column(db.String(160))
 
+
+from app import login
+@login.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+
+class AnonymousUser(AnonymousUserMixin):
+    def can(self, permissions):
+        return False
+
+    def is_administrator(self):
+        return False
+
+login.anonymous_user = AnonymousUser

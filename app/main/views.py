@@ -1,6 +1,7 @@
 from . import main
-from app.models import User
+from app.models import User, PrivilegeGroup
 from flask import render_template
+from decorators import privileges_required
 
 
 @main.route('/')
