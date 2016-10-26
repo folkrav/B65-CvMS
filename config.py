@@ -5,7 +5,6 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config:
     SECRET_KEY = data['SECRET_KEY']
     SQLALCHEMY_TRACK_MODIFICATIONS = True
-    CVMS_ADMIN = data['CVMS_ADMIN']
 
     @staticmethod
     def init_app(app):
