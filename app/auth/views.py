@@ -13,7 +13,7 @@ def login():
         if user is not None and user.check_password(form.password.data):
             login_user(user, remember=form.remember.data)
             return redirect(url_for('main.index'))
-        flash('Mauvaises informations de connection.', 'danger')
+        flash('Mauvaises informations de connexion.', 'danger')
 
     return render_template('auth/login.html', form=form)
 
