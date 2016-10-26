@@ -11,7 +11,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Me connecter')
 
 class RegisterForm(FlaskForm):
-    username = StringField('Nom d\'utilisateur', validators=[Required('Veuillez entrer un nom d\'utilisateur'),                                                                  Length(1,64),
+    username = StringField('Nom d\'utilisateur', validators=[Required('Veuillez entrer un nom d\'utilisateur'), Length(1,64),
                                                              Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0,
                                                              'Un nom d\'usager ne peut contenir que des lettres, '
                                                              'chiffres, points ou barres de soulignement.')])

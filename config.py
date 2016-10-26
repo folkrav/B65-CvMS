@@ -4,8 +4,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
     SECRET_KEY = data['SECRET_KEY']
-    SQLALCHEMY_COMMIT_ON_TEARDOWN = True
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
     CVMS_ADMIN = data['CVMS_ADMIN']
 
     @staticmethod
@@ -23,7 +22,6 @@ class TestingConfig(Config):
 
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = data['PROD_DB_URL']
-    pass
 
 
 configs = {

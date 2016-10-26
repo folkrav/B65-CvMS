@@ -3,8 +3,6 @@ from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from config import configs
-from .main import main as main_blueprint
-from .auth import auth as auth_blueprint
 
 
 bootstrap = Bootstrap()
@@ -25,6 +23,8 @@ def create_app(config_name):
     db.init_app(app)
 
     # Register blueprints to the app
+    from app.main import main as main_blueprint
+    from app.auth import auth as auth_blueprint
     app.register_blueprint(main_blueprint)
     app.register_blueprint(auth_blueprint, url_prefix='/authentication');
 
