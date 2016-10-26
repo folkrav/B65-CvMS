@@ -35,23 +35,21 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                        <span class="navbar-text">
-                        {% if current_user.is_authenticated %}     
+                        {% if current_user.is_authenticated %}
                             {{ current_user.username }}
                         {% else %}
                             Compte
-                        {% endif %}
-                        </span>
+                        {%- endif %}
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
                         {% if current_user.is_authenticated %}
                             <li><a href="users/me">Mon compte</a></li>
                             <li><a href="{{ url_for('auth.logout') }}">Se déconnecter</a></li>
-                        {% else %}
+                        {%- else %}
                             <li><a href="{{ url_for('auth.login') }}">Se connecter</a></li>
                             <li><a href="{{ url_for('auth.register') }}">S'enregistrer</a></li>
-                        {% endif %}
+                        {%- endif %}
                     </ul>
                 </li>
             </ul>
