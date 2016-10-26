@@ -1,16 +1,11 @@
-/* Ugly, but less ugly than bootstrap's circle borders... */
-* {
-    -webkit-border-radius: 0 !important;
-    -moz-border-radius: 0 !important;
-    border-radius: 0 !important;
-}
-
+/* Maximum middle container width */
 @media (min-width: 1200px) {
     .container {
         width: 970px;
     }
 }
 
-.dropdown-backdrop {
-  display: none;
+/* Colors */
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }

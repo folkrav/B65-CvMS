@@ -1,29 +1,30 @@
 from .__init__ import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+from flask_login import UserMixin
 
 
 users_privileges = db.Table('users_privileges', db.Model.metadata,
-    db.Column('id_privilege', db.Integer, db.ForeignKey('privilege_groups.id_privilege')),
-    db.Column('id_user', db.Integer, db.ForeignKey('users.id_user'))
+    db.Column('id_privilege', db.Integer, db.ForeignKey('privilege_groups.id')),
+    db.Column('id_user', db.Integer, db.ForeignKey('users.id'))
 )
 
 
 article_collaborators = db.Table('article_collaborators', db.Model.metadata,
-    db.Column('id_article', db.Integer, db.ForeignKey('articles.id_article')),
-    db.Column('id_collaborator', db.Integer, db.ForeignKey('users.id_user'))
+    db.Column('id_article', db.Integer, db.ForeignKey('articles.id')),
+    db.Column('id_collaborator', db.Integer, db.ForeignKey('users.id'))
 )
 
 
 article_tags = db.Table('article_tags', db.Model.metadata,
-    db.Column('id_article', db.Integer, db.ForeignKey('articles.id_article')),
-    db.Column('id_tag', db.Integer, db.ForeignKey('tags.id_tag'))
+    db.Column('id_article', db.Integer, db.ForeignKey('articles.id')),
+    db.Column('id_tag', db.Integer, db.ForeignKey('tags.id'))
 )
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = 'users'
-    id_user = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))
     username = db.Column(db.String(64), unique=True, index=True)
     email = db.Column(db.String(128), unique=True)
@@ -53,43 +54,43 @@ class User(db.Model):
 
 class PrivilegeGroup(db.Model):
     __tablename__ = 'privilege_groups'
-    id_privilege = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
     description = db.Column(db.String(192))
 
 
 class Article(db.Model):
     __tablename__ = 'articles'
-    id_article = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(64))
     summary = db.Column(db.String(160))
     body = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     collaborators = db.relationship('User', secondary=article_collaborators)
     tags = db.relationship('Tag', secondary=article_tags)
-    id_category = db.Column(db.Integer, db.ForeignKey('article_categories.id_category'))
+    id_category = db.Column(db.Integer, db.ForeignKey('article_categories.id'))
     category = db.relationship('ArticleCategory', backref=db.backref('articles', lazy='dynamic'))
-    id_status = db.Column(db.Integer, db.ForeignKey('article_statuses.id_status'))
+    id_status = db.Column(db.Integer, db.ForeignKey('article_statuses.id'))
     status = db.relationship('ArticleStatus', backref=db.backref('articles', lazy='dynamic'))
 
 
 class Tag(db.Model):
     __tablename__ = 'tags'
-    id_tag = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
     description = db.Column(db.String(160))
 
 
 class ArticleStatus(db.Model):
     __tablename__ = 'article_statuses'
-    id_status = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
     description = db.Column(db.String(160))
 
 
 class ArticleCategory(db.Model):
     __tablename__ = 'article_categories'
-    id_category = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
     description = db.Column(db.String(160))
 

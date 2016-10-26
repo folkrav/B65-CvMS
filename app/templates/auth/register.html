@@ -1,0 +1,10 @@
+{%- extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}CvMS - Enregistrement{% endblock %}
+
+{% block contents %}
+{{super()}}
+<div class="page-header col-md-offset-1"><h1>Enregistrement</h1></div>
+<div class="col-md-10 col-md-offset-1">{{ wtf.quick_form(form) }}</div>
+{%- endblock %}
