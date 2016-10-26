@@ -10,7 +10,7 @@ def login():
         from ..models import User
         user = User.query.filter_by(username=form.username.data).first()
         if user is not None and user.check_password(form.password.data):
-            login_user(user, form.remember.data)
+            login_user(user, remember=form.remember.data)
             return redirect(url_for('main.index'))
         flash('Mauvaises informations de connection.')
 
@@ -25,7 +25,7 @@ def register():
                     email=form.email.data, password=form.password.data)
         from app import db
         db.session.add(user)
-        flash('Vous pouvez maintenant vous connecter.')
+        flash('Compte créé! Vous pouvez maintenant vous connecter.')
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', form=form)
 
