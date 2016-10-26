@@ -40,7 +40,7 @@ class InitDb(Command):
             ArticleStatus(name='published', description='Article has been published')
         ]
         priv_group = [
-            PrivilegeGroup(name='authentified', description='Can comment publications and modify his profile.'),
+            PrivilegeGroup(name='authenticated', description='Can comment publications and modify his profile.'),
             PrivilegeGroup(name='creator', description='Can publish content on the website.'),
             PrivilegeGroup(name='moderator', description='Can remove or modify any article.'),
             PrivilegeGroup(name='administrator', description='Can activate, remove or modify any user.')
