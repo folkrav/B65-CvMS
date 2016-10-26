@@ -51,6 +51,10 @@ class User(db.Model, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+from app import login
+@login.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 class PrivilegeGroup(db.Model):
     __tablename__ = 'privilege_groups'
