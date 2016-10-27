@@ -5,9 +5,16 @@
     }
 }
 
+body {
+    min-width: 320px; /* suppose you want minimun width of 1000px */
+    width: auto !important;  /* Firefox will set width as auto */
+    width: 320px;             /* As IE ignores !important it will set width as 1000px; */
+}
+
 /* Alert */
 .alert {
-    width: 550px;
+    width: 60%;
+    min-width: 290px;
     margin: 0 auto;
     display: none;
     margin-bottom: 24px;
