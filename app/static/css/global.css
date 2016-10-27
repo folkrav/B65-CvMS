@@ -5,17 +5,46 @@
     }
 }
 
-/* Colors */
-body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+/* Alert */
+.alert {
+    width: 350px;
+    margin: 0 auto;
+    display: none;
+    margin-bottom: 24px;
 }
 
-/* Error pages */
-.error404,
-.error505 {
+ /*jumbotrons */
+.jumbotron {
     min-height: 300px;
-    background-size: cover;
-    color: #222;
+    position: relative;
+    background: none;
+    overflow: hidden;
+}
+.jumbotron h1,
+.jumbotron p {
+    color: #fafafa;
 }
 
-.error404 {background-image: url('/static/img/404.jpeg');}
+/* Create blur effect */
+.jumbotron-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    transform: scale(1.05);
+    -webkit-filter: blur(5px);
+    -moz-filter: blur(5px);
+    -o-filter: blur(5px);
+    -ms-filter: blur(5px);
+    filter: blur(5px);
+    z-index: -1;
+}
+
+.jumbotron-index {height: 300px;}
+.jumbotron-index .jumbotron-background {background: #000 url('/static/img/index.jpg') center center;}
+
+.jumbotron-404 {height: 500px;}
+.jumbotron-404 .jumbotron-background {background: #000 url('/static/img/404.jpg') center center;}

@@ -2,9 +2,9 @@
 
 {% block contents %}
 {{super()}}
-<div class="jumbotron error404">
+<div class="jumbotron jumbotron-404">
+    <div class="jumbotron-background"></div>
     <h1>Oups... erreur 404.</h1>
     <p>Page introuvable. Voulez-vous retourner à <a href="{{ url_for('main.index') }}">l'accueil</a>?</p>
 </div>
-
 {%- endblock %}

@@ -12,9 +12,9 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
         if user is not None and user.check_password(form.password.data):
             login_user(user, remember=form.remember.data)
+            flash('Connexion réussie!', 'success')
             return redirect(url_for('main.index'))
         flash('Mauvaises informations de connexion.', 'danger')
-
     return render_template('auth/login.html', form=form)
 
 @auth.route('/register', methods=['GET', 'POST'])

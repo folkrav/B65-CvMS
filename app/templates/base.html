@@ -14,8 +14,11 @@
 
 {% block styles %}
     {{super()}}
-    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/global.css')}}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/global.css') }}">
     
 {% endblock %}
 
@@ -77,14 +80,20 @@
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        {{ message }}
-                    </div>
+                <div class="alert alert-{{ category }} fade in out">
+                    {{ message }}
+                </div>
                 {% endfor %}
             {% endif %}
         {% endwith %}
+
         {% block contents %}{% endblock %}
+
     </div>
     {% endblock %}
+{% endblock %}
+
+{% block scripts %}
+{{super()}}
+<script src="{{url_for('static', filename='js/ui.js')}}"></script>
 {% endblock %}
