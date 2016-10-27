@@ -12,7 +12,7 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
         if user is not None and user.check_password(form.password.data):
             from datetime import datetime
-            user.last_visit = datetime.utcnow
+            user.last_visit = datetime.utcnow()
             login_user(user, remember=form.remember.data)
             db.session.commit()
             flash('Connexion réussie!', 'success')
