@@ -1,0 +1,15 @@
+{%- extends "base.html" %}
+
+{% block title %}CvMS - {{ user.username }}{% endblock %}
+
+{% block contents %}
+{{super()}}
+<div class="page-header"><h1>{{ user.username }}</h1></div>
+<div class="panel panel-default col-md-10 col-md-offset-1">
+    <div class="panel-body">
+        <p>Nom : {% if user.name %}{{ user.name }}{% endif %}</p>
+        <p>À propos : {% if user.about_me %}{{ user.about_me }}{% endif %}</p>
+        <p>Dernière connexion : {{ moment(user.last_visit).fromNow() }}</p>
+    </div>
+</div>
+{%- endblock %}

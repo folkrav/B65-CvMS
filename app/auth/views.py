@@ -1,9 +1,15 @@
 from flask import render_template, redirect, request, url_for, flash
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from . import auth
 from .forms.authforms import LoginForm, RegisterForm
 from app.models import User
 from app import db
+
+
+@auth.before_app_request
+def before_request():
+    if current_user.is_authenticated:
+        current_user.has_been_seen()
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -11,10 +17,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is not None and user.check_password(form.password.data):
-            from datetime import datetime
-            user.last_visit = datetime.utcnow()
             login_user(user, remember=form.remember.data)
-            db.session.commit()
             flash('Connexion réussie!', 'success')
             return redirect(url_for('main.index'))
         flash('Mauvaises informations de connexion.', 'danger')

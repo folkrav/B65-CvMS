@@ -54,6 +54,10 @@ class User(db.Model, UserMixin):
     def can(self, privilege):
         return PrivilegeGroup.query.get(privilege) in self.privileges
 
+    def has_been_seen(self):
+        self.last_visit = datetime.utcnow()
+        db.session.add(self)
+
     @property
     def password(self):
         raise AttributeError('the attribute "Password" is not directly readable')

@@ -95,5 +95,7 @@
 
 {% block scripts %}
 {{super()}}
+{{ moment.include_moment() }}
+{{ moment.lang("fr") }}
 <script src="{{url_for('static', filename='js/ui.js')}}"></script>
 {% endblock %}
