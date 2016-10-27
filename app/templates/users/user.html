@@ -6,10 +6,21 @@
 {{super()}}
 <div class="page-header"><h1>{{ user.username }}</h1></div>
 <div class="panel panel-default col-md-10 col-md-offset-1">
+    {% if current_user is equalto user %}
+    <a href="#" class="btn btn-primary pull-right">Modifier</a>
+    {% endif %}
     <div class="panel-body">
-        <p>Nom : {% if user.name %}{{ user.name }}{% endif %}</p>
-        <p>À propos : {% if user.about_me %}{{ user.about_me }}{% endif %}</p>
-        <p>Dernière connexion : {{ moment(user.last_visit).fromNow() }}</p>
+    <h3>À propos</h3>
+    {% if user.about %}
+        {{ user.about | safe }}
+    {% else %}
+        <em>Cet utilisateur n'a pas mis à jour sa description.</em>
+    {% endif %}
     </div>
+    <ul class="list-group">
+        {% if user.name %}<li class="list-group-item"><span class="panel-list-title">Nom : </span>{{ user.name }}</li>{% endif %}
+        {% if user.location %}<li class="list-group-item"><span class="panel-list-title">Emplacement : </span>{{ user.location }}</li>{% endif %}
+        <li class="list-group-item"><span class="panel-list-title">Dernière connexion : </span>{{ moment(user.last_visit).fromNow() }}</li>
+    </ul>
 </div>
 {%- endblock %}

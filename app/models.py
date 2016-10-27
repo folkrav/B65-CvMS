@@ -20,7 +20,7 @@ article_tags = db.Table('article_tags', db.Model.metadata,
     db.Column('id_article', db.Integer, db.ForeignKey('articles.id')),
     db.Column('id_tag', db.Integer, db.ForeignKey('tags.id'))
 )
- 
+
 
 class PrivilegeGroup(db.Model):
     __tablename__ = 'privilege_groups'
@@ -40,6 +40,8 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String(128))
     username = db.Column(db.String(64), unique=True, index=True)
     email = db.Column(db.String(128), unique=True)
+    about = db.Column(db.Text)
+    location = db.Column(db.String(128))
     password_hash = db.Column(db.String(128), nullable=False)
     register_date = db.Column(db.DateTime, default=datetime.utcnow)
     last_visit = db.Column(db.DateTime)
