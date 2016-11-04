@@ -1,0 +1,32 @@
+{%- extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}CvMS - {{ user.username }} - Modifier mon compte{% endblock %}
+
+{% block contents %}
+{{super()}}
+<div class="page-header"><h1>{{ user.username }} - Modifier mon compte</h1></div>
+<div class="panel panel-default col-md-10 col-md-offset-1">
+    <form class="form" method="post" role="form">
+    {{ form.csrf_token }}
+    {{ wtf.form_field(form.email) }}
+    {{ wtf.form_field(form.location) }}
+    <div class="form-group ">
+        <label class="control-label" for="location">À propos</label>
+        <a href="http://commonmark.org/help/" target="_blank" class="pull-right">Aide pour la mise en forme</a>
+        {{ form.about(only_input=True, rows=10, style="width:100%;") }}
+        <a href="#preview" target="_blank" class="pull-right" data-toggle="collapse">Prévisualiser</a>
+        <div id="preview" class="collapse">
+            {{ form.about(only_preview=True) }}
+        </div>
+    </div>
+    {{ wtf.form_field(form.password) }}
+    {{ wtf.form_field(form.submit) }}
+    </form>
+</div>
+{%- endblock %}
+
+{% block scripts %}
+{{super()}}
+{{ pagedown.include_pagedown() }}
+{% endblock %}
