@@ -11,6 +11,10 @@ body {
     width: 320px;             /* As IE ignores !important it will set width as 1000px; */
 }
 
+#contentarea {
+    margin-top: 75px;
+}
+
 /* Alert */
 .alert {
     width: 60%;
