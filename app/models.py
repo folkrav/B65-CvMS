@@ -110,6 +110,12 @@ class ArticleCategory(db.Model):
     name = db.Column(db.String(64))
     description = db.Column(db.String(160))
 
+    categories = {
+        'articles': 1,
+        'images': 2,
+        'videos': 3
+    }
+
 
 from app import login
 @login.user_loader
