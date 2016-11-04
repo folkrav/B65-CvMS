@@ -17,6 +17,9 @@ login = LoginManager()
 login.session_protection = 'strong'
 login.login_view = 'auth.login'
 
+# Global configuration variables
+POSTS_PER_PAGE = 10
+
 def create_app(config_name):
     """Factory method to create a CvMS app instance."""
     app = Flask(__name__)
@@ -38,5 +41,7 @@ def create_app(config_name):
     app.register_blueprint(auth_blueprint, url_prefix='/authentication')
     from app.users import users as users_blueprint
     app.register_blueprint(users_blueprint, url_prefix='/users')
+    from app.articles import articles as articles_blueprint
+    app.register_blueprint(articles_blueprint, url_prefix="/articles")
 
     return app

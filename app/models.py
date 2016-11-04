@@ -100,6 +100,9 @@ class ArticleStatus(db.Model):
     name = db.Column(db.String(64))
     description = db.Column(db.String(160))
 
+    DRAFT = 1
+    PUBLISHED = 2
+
 
 class ArticleCategory(db.Model):
     __tablename__ = 'article_categories'
