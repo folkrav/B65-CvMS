@@ -17,11 +17,16 @@ body {
 
 /* Alert */
 .alert {
-    width: 60%;
-    min-width: 290px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 9999;
     margin: 0 auto;
+    width: 40%;
+    min-width: 290px;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
     display: none;
-    margin-bottom: 24px;
 }
 
  /*jumbotrons */
