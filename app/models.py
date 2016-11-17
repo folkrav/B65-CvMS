@@ -79,6 +79,8 @@ class Article(db.Model):
     title = db.Column(db.String(64))
     summary = db.Column(db.String(160))
     body = db.Column(db.Text)
+    image_path = db.Column(db.String(2083))
+    link_url = db.Column(db.String(2083))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     collaborators = db.relationship('User', secondary=article_collaborators)
     tags = db.relationship('Tag', secondary=article_tags)
