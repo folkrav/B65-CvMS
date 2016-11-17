@@ -1,4 +1,5 @@
 {%- extends "base.html" %}
+{%- from "macros.html" import show_posts with context %}
 {% from "bootstrap/pagination.html" import render_pagination %}
 
 {% block title %}CvMS - Articles{% endblock %}
@@ -7,28 +8,6 @@
 {{super()}}
 <div class="page-header"><h1>{{ title }}</h1></div>
 <div class="text-center">{{ render_pagination(posts) }}</div>
-{% for post in posts.items %}
-<div class="panel panel-default col-md-10 col-md-offset-1">
-    <div class="panel-heading">
-        <h3><a href="{{ url_for('articles.editarticle', id=post.id) }}">{{ post.title }}</a></h3>
-    </div>
-    <div class="panel-body">
-        <p>{{ post.summary }}</p>
-        <div>
-            <span class="badge">{{ post.timestamp }}</span>
-            <small>
-                {% for user in post.collaborators %}
-                <a href="{{ url_for('users.user', username=user.username) }}">{{ user.name }}</a>
-                {% endfor %}
-            </small>
-            <div class="pull-right">
-                {%- for tag in post.tags %}
-                <span class="label label-default">{{ tag.name }}</span>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-</div>
-{% endfor %}
+{{ show_posts() }}
 <div class="text-center">{{ render_pagination(posts) }}</div>
 {%- endblock %}
