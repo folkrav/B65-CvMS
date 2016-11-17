@@ -25,7 +25,7 @@ def edit(username):
 
     if form.validate_on_submit():
         if user.check_password(form.password.data):
-            user.email = form.email.data
+            user.name = form.name.data
             user.location = form.location.data
             user.about = form.about.data
             db.session.commit()
