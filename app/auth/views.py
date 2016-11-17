@@ -6,17 +6,13 @@ from app.models import User
 from app import db
 
 
-@auth.before_app_request
-def before_request():
-    if current_user.is_authenticated:
-        current_user.has_been_seen()
-
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is not None and user.check_password(form.password.data):
+            user.has_been_seen()
             login_user(user, remember=form.remember.data)
             flash('Connexion réussie!', 'success')
             return redirect(url_for('main.index'))

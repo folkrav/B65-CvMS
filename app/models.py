@@ -59,6 +59,7 @@ class User(db.Model, UserMixin):
     def has_been_seen(self):
         self.last_visit = datetime.utcnow()
         db.session.add(self)
+        db.session.commit()
 
     @property
     def password(self):
