@@ -116,7 +116,7 @@ class ArticleCategory(db.Model):
     categories = {
         'articles': 1,
         'images': 2,
-        'videos': 3
+        'links': 3
     }
 
 
