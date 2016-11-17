@@ -17,32 +17,61 @@ def articlespage(category, page=1):
     return render_template('articles/article.html', posts=posts, title=title)
 
 
-@articles.route('/new/<string:category>', methods=['GET', 'POST'])
+@articles.route('/<string:category>/new', methods=['GET', 'POST'])
 @login_required
 @privileges_required(PrivilegeGroup.CREATOR)
 def newarticle(category):
     if category not in ArticleCategory.categories.keys():
         abort(404)
 
-    categories_forms = [TextPublicationForm(), ImagePublicationForm(), LinkPublicationForm()]
-    form = categories_forms[ArticleCategory.categories[category] - 1]
+    CATEGORIES_FORMS = [TextPublicationForm(), ImagePublicationForm(), LinkPublicationForm()]
+    form = CATEGORIES_FORMS[ArticleCategory.categories[category] - 1]
     is_text_article = (category == "articles")
     if form.validate_on_submit():
         article = Article(title=form.title.data,
                           summary=form.summary.data)
-        article.category = (ArticleCategory.query.get(ArticleCategory.categories[category]))
-        article.collaborators.append(current_user)
-        article.status = (ArticleStatus.query.get(ArticleStatus.PUBLISHED if form.status.data else ArticleStatus.DRAFT))
-        if category == "articles":
-            article.body = form.body.data
-        elif category == "images":
-            pass
-        elif category == "links":
-            pass
-
-        db.session.add(article)
-        db.session.commit()
+        _article_submit(form, article, category)
         redirect(url_for('users.user', username=current_user.username))
 
+    return render_template('articles/newarticle.html', form=form, is_text_article=is_text_article)
+
+@articles.route('/<int:id>/edit', methods=['GET', 'POST'])
+@login_required
+@privileges_required(PrivilegeGroup.CREATOR)
+def editarticle(id):
+    article = Article.query.get(id)
+    if not article:
+        abort(404)
+
+    CATEGORIES_FORMS = [TextPublicationForm(), ImagePublicationForm(), LinkPublicationForm()]
+    form = CATEGORIES_FORMS[article.category.id - 1]
+    form.title.data = article.title
+    form.summary.data = article.summary
+    form.status.data = (article.status == ArticleStatus.query.get(ArticleStatus.PUBLISHED))
+    is_text_article = (article.category.name == "articles")
+
+    if article.category.name == "articles":
+        form.body.data = article.body
+    elif article.category.name == "images":
+        pass
+    elif article.category.name == "links":
+        pass
+
+    if form.validate_on_submit():
+        _article_submit(form, article, article.category.name)
 
     return render_template('articles/newarticle.html', form=form, is_text_article=is_text_article)
+
+def _article_submit(form, article, category):
+    article.category = (ArticleCategory.query.get(ArticleCategory.categories[category]))
+    article.collaborators.append(current_user)
+    article.status = (ArticleStatus.query.get(ArticleStatus.PUBLISHED if form.status.data else ArticleStatus.DRAFT))
+    if category == "articles":
+        article.body = form.body.data
+    elif category == "images":
+        pass
+    elif category == "links":
+        pass
+
+    db.session.add(article)
+    db.session.commit()
