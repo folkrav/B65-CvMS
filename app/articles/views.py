@@ -10,10 +10,11 @@ from decorators import privileges_required
 @articles.route('/<string:category>')
 @articles.route('/<string:category>/<int:page>')
 def articlespage(category, page=1):
+    title = category.title()
     posts = Article.query.filter_by(category=ArticleCategory.query.get(ArticleCategory.categories[category]))
     posts = posts.filter_by(status=ArticleStatus.query.get(ArticleStatus.PUBLISHED))
     posts = posts.order_by(Article.timestamp.desc()).paginate(page, POSTS_PER_PAGE, False)
-    return render_template('articles/article.html', posts=posts)
+    return render_template('articles/article.html', posts=posts, title=title)
 
 
 @articles.route('/new/<string:category>', methods=['GET', 'POST'])
