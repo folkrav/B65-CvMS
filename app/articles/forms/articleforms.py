@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, BooleanField, SubmitField, FileField, HiddenField
+from wtforms import StringField, BooleanField, SubmitField, FileField, HiddenField, SelectMultipleField
 from flask_pagedown.fields import PageDownField
 from wtforms.validators import Length, Required
 from wtforms import ValidationError
@@ -10,6 +10,7 @@ class NewArticleForm(FlaskForm):
     summary = StringField('Résumé', validators=[Length(1,160),
                                                Required('Veuillez entrer une courte description votre publication.')])
     status = BooleanField('Publier l\'article immédiatement')
+    tags = SelectMultipleField('Tags')
     submit = SubmitField('Enregistrer les modifications')
     category = HiddenField()
 
