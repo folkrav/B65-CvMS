@@ -5,6 +5,8 @@ from flask_login import LoginManager
 from flask_moment import Moment
 from flask_pagedown import PageDown
 from flask_misaka import Misaka
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
 from config import configs
 
 
@@ -14,6 +16,8 @@ moment = Moment()
 pagedown = PageDown()
 misaka = Misaka()
 login = LoginManager()
+adminpanel = Admin()
+
 login.session_protection = 'strong'
 login.login_view = 'auth.login'
 
@@ -33,6 +37,18 @@ def create_app(config_name):
     moment.init_app(app)
     pagedown.init_app(app)
     misaka.init_app(app)
+    adminpanel.init_app(app)
+
+    from .models import User, Article, Tag
+    from .admin import UserView, ArticleView
+    class ChildView(ModelView):
+        column_auto_select_related = True
+        column_display_pk = True # optional, but I like to see the IDs in the list
+        column_hide_backrefs = False
+
+    adminpanel.add_view(UserView(User, db.session))
+    adminpanel.add_view(ArticleView(Article, db.session))
+    adminpanel.add_view(ChildView(Tag, db.session))
 
     # Register blueprints to the app
     from app.main import main as main_blueprint

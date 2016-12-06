@@ -33,6 +33,9 @@ class PrivilegeGroup(db.Model):
     MODERATOR = 3
     ADMINISTRATOR = 4
 
+    def __str__(self):
+        return self.name
+
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
@@ -52,6 +55,9 @@ class User(db.Model, UserMixin):
         super(User, self).__init__(**kwargs)
         if self.privileges is None:
             self.privileges.append(PrivilegeGroup.get(PrivilegeGroup.AUTHENTICATED))
+
+    def __str__(self):
+        return self.name
 
     def can(self, privilege):
         return PrivilegeGroup.query.get(privilege) in self.privileges
@@ -82,12 +88,15 @@ class Article(db.Model):
     image_path = db.Column(db.String(2083))
     link_url = db.Column(db.String(2083))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    collaborators = db.relationship('User', secondary=article_collaborators)
+    collaborators = db.relationship('User', secondary=article_collaborators, backref=db.backref('articles', lazy='dynamic'))
     tags = db.relationship('Tag', secondary=article_tags)
     id_category = db.Column(db.Integer, db.ForeignKey('article_categories.id'))
     category = db.relationship('ArticleCategory', backref=db.backref('articles', lazy='dynamic'))
     id_status = db.Column(db.Integer, db.ForeignKey('article_statuses.id'))
     status = db.relationship('ArticleStatus', backref=db.backref('articles', lazy='dynamic'))
+
+    def __str__(self):
+        return self.title
 
 
 class Tag(db.Model):
@@ -95,6 +104,9 @@ class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
     description = db.Column(db.String(160))
+
+    def __str__(self):
+        return self.name
 
 
 class ArticleStatus(db.Model):
@@ -105,6 +117,9 @@ class ArticleStatus(db.Model):
 
     DRAFT = 1
     PUBLISHED = 2
+
+    def __str__(self):
+        return self.name
 
 
 class ArticleCategory(db.Model):
@@ -118,6 +133,9 @@ class ArticleCategory(db.Model):
         'image': 2,
         'video': 3
     }
+
+    def __str__(self):
+        return self.name
 
 
 from app import login
