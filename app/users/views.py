@@ -14,7 +14,7 @@ def user(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
         abort(404)
-    return render_template('users/user.html', user=user)
+    return render_template('users/user.html', user=user, user_isadmin=user.is_administrator())
 
 @users.route('/<username>/edit', methods=['GET', 'POST'])
 def edit(username):
