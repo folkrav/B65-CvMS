@@ -27,6 +27,11 @@ def newarticle(category):
     CATEGORIES_FORMS = [TextPublicationForm(), ImagePublicationForm(), LinkPublicationForm()]
     form = CATEGORIES_FORMS[ArticleCategory.categories[category] - 1]
     is_text_article = (category == "articles")
+
+    form.tags.choices = [(str(t.id), t.name) for t in Tag.query.all()]
+    form.tags.default = []
+    form.tags.process(request.form)
+
     if form.validate_on_submit():
         article = Article(title=form.title.data,
                           summary=form.summary.data)
@@ -34,6 +39,7 @@ def newarticle(category):
         redirect(url_for('users.user', username=current_user.username))
 
     return render_template('articles/newarticle.html', form=form, is_text_article=is_text_article)
+
 
 @articles.route('/<int:id>/edit', methods=['GET', 'POST'])
 @login_required
@@ -48,21 +54,21 @@ def editarticle(id):
     form.title.data = article.title
     form.summary.data = article.summary
     form.status.data = (article.status == ArticleStatus.query.get(ArticleStatus.PUBLISHED))
-    is_text_article = (article.category.name == "articles")
+    is_text_article = (article.category.name == "post")
 
     tags_choices_all, tags_choices = _get_tags_choices(article)
     form.tags.choices = tags_choices_all
     form.tags.default = [id for id, title in tags_choices]
     form.tags.process(request.form)
 
-    _update_tags(request, article, form)
-
-    if article.category.name == "articles":
+    if article.category.name == "post":
         form.body.data = article.body
-    elif article.category.name == "images":
+    elif article.category.name == "image":
         pass
-    elif article.category.name == "links":
+    elif article.category.name == "video":
         pass
+
+    _update_tags(request, article, form)
 
     if form.validate_on_submit():
         _article_submit(form, article, article.category.name)
@@ -88,11 +94,11 @@ def _article_submit(form, article, category):
     article.category = (ArticleCategory.query.get(ArticleCategory.categories[category]))
     article.collaborators.append(current_user)
     article.status = (ArticleStatus.query.get(ArticleStatus.PUBLISHED if form.status.data else ArticleStatus.DRAFT))
-    if category == "articles":
+    if category == "post":
         article.body = form.body.data
-    elif category == "images":
+    elif category == "image":
         pass
-    elif category == "links":
+    elif category == "video":
         pass
 
     db.session.add(article)

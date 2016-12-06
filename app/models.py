@@ -114,9 +114,9 @@ class ArticleCategory(db.Model):
     description = db.Column(db.String(160))
 
     categories = {
-        'articles': 1,
-        'images': 2,
-        'links': 3
+        'post': 1,
+        'image': 2,
+        'video': 3
     }
 
 
