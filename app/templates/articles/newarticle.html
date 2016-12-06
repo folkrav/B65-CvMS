@@ -1,0 +1,43 @@
+{%- extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}CvMS - Nouvelle publication{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/select2/4.0.3/css/select2.min.css">
+{% endblock %}
+
+{% block contents %}
+{{super()}}
+<div class="page-header"><h1>Nouvelle publication</h1></div>
+<div class="panel panel-default col-md-10 col-md-offset-1">
+    <form class="form" method="post" role="form">
+        {{ form.csrf_token }}
+        {{ wtf.form_field(form.title) }}
+        {{ wtf.form_field(form.summary) }}
+        {% if is_text_article %}
+            <div class="form-group ">
+                <label class="control-label" for="location">Texte de l'article</label>
+                <a href="http://commonmark.org/help/" target="_blank" class="pull-right">Aide pour la mise en forme</a>
+                {{ form.body(only_input=True, rows=10, style="width:100%;") }}
+                <a href="#preview" target="_blank" class="pull-right" data-toggle="collapse">Prévisualiser</a>
+                <div id="preview" class="collapse">
+                    {{ form.body(only_preview=True) }}
+                </div>
+            </div>
+        {% else %}
+            {{ wtf.form_field(form.body) }}
+        {% endif %}
+        {{ wtf.form_field(form.tags) }}
+        {{ wtf.form_field(form.status) }}
+        {{ wtf.form_field(form.submit) }}
+    </form>
+</div>
+{%- endblock %}
+
+{% block scripts %}
+{{super()}}
+<script src="https://cdn.jsdelivr.net/select2/4.0.3/js/select2.full.min.js"></script>
+<script src="{{url_for('static', filename='js/articles.js')}}"></script>
+{% endblock %}

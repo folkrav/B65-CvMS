@@ -9,6 +9,9 @@
     {% if current_user is equalto user %}
     <a href="{{ url_for('users.edit', username=current_user.username) }}" class="btn btn-primary pull-right">Modifier</a>
     {% endif %}
+    {% if user_isadmin %}
+    <a href="{{ url_for('admin.index') }}" class="btn btn-primary pull-right">Administration</a>
+    {% endif %}
     <div class="panel-body">
     <h3>À propos</h3>
     {% if user.about %}
