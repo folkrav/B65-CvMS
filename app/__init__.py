@@ -41,14 +41,9 @@ def create_app(config_name):
 
     from .models import User, Article, Tag
     from .admin import UserView, ArticleView
-    class ChildView(ModelView):
-        column_auto_select_related = True
-        column_display_pk = True # optional, but I like to see the IDs in the list
-        column_hide_backrefs = False
-
     adminpanel.add_view(UserView(User, db.session))
     adminpanel.add_view(ArticleView(Article, db.session))
-    adminpanel.add_view(ChildView(Tag, db.session))
+    adminpanel.add_view(UserView(Tag, db.session))
 
     # Register blueprints to the app
     from app.main import main as main_blueprint

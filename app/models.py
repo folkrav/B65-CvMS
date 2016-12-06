@@ -54,7 +54,7 @@ class User(db.Model, UserMixin):
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
         if self.privileges is None:
-            self.privileges.append(PrivilegeGroup.get(PrivilegeGroup.AUTHENTICATED))
+            self.privileges.append(PrivilegeGroup.query.get(PrivilegeGroup.AUTHENTICATED))
 
     def __str__(self):
         return self.name
@@ -77,6 +77,11 @@ class User(db.Model, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def is_administrator(self):
+        import sys
+        print(self.can(PrivilegeGroup.ADMINISTRATOR), file=sys.stderr)
+        return self.can(PrivilegeGroup.ADMINISTRATOR)
 
 
 class Article(db.Model):
