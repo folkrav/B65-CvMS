@@ -1,4 +1,6 @@
 {%- extends "base.html" %}
+{%- from "macros.html" import show_posts with context %}
+{% from "bootstrap/pagination.html" import render_pagination %}
 
 {% block title %}CvMS - {{ user.username }}{% endblock %}
 
@@ -8,6 +10,9 @@
 <div class="panel panel-default col-md-10 col-md-offset-1">
     {% if current_user is equalto user %}
     <a href="{{ url_for('users.edit', username=current_user.username) }}" class="btn btn-primary pull-right">Modifier</a>
+    {% endif %}
+    {% if user_isadmin %}
+    <a href="{{ url_for('admin.index') }}" class="btn btn-primary pull-right">Administration</a>
     {% endif %}
     <div class="panel-body">
     <h3>À propos</h3>
@@ -23,4 +28,15 @@
         <li class="list-group-item"><span class="panel-list-title">Dernière connexion : </span>{{ moment(user.last_visit).fromNow() }}</li>
     </ul>
 </div>
+{% if current_user is equalto user %}
+    <div class="btn-group-justified" style="width:100%">
+        <a href="{{ url_for('articles.newarticle', category="post") }}" class="btn btn-default">Nouvel article</a>
+        <a href="{{ url_for('articles.newarticle', category="image") }}" class="btn btn-default">Nouvelle image</a>
+        <a href="{{ url_for('articles.newarticle', category="video") }}" class="btn btn-default">Nouveau vidéo</a>
+    </div>
+{% endif %}
+<div class="page-header"><h1>Publications</h1></div>
+<div class="text-center">{{ render_pagination(posts) }}</div>
+{{ show_posts() }}
+<div class="text-center">{{ render_pagination(posts) }}</div>
 {%- endblock %}

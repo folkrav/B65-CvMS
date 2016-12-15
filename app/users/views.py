@@ -4,17 +4,19 @@ from flask import render_template, abort, flash, redirect, url_for
 from flask_login import current_user, login_required
 from decorators import privileges_required
 from .forms.userforms import EditForm
-from app.models import User
-from app import db
+from app.models import User, Article
+from app import db, POSTS_PER_PAGE
 
 
 @users.route('/<username>')
+@users.route('/<username>/<int:page>')
 @login_required
-def user(username):
+def user(username, page=1):
     user = User.query.filter_by(username=username).first()
     if user is None:
         abort(404)
-    return render_template('users/user.html', user=user)
+    posts = Article.query.filter(Article.collaborators.contains(user)).order_by(Article.timestamp.desc()).paginate(page, POSTS_PER_PAGE, False)
+    return render_template('users/user.html', user=user, user_isadmin=user.is_administrator(), posts=posts)
 
 @users.route('/<username>/edit', methods=['GET', 'POST'])
 def edit(username):
