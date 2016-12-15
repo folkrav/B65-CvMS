@@ -2,13 +2,16 @@
 {% for post in posts.items %}
 <div class="panel panel-default col-md-10 col-md-offset-1">
     <div class="panel-heading">
-        <h3><a href="{{ url_for('articles.editarticle', id=post.id) }}">{{ post.title }}</a></h3>
+        <h3><a href="{{ url_for('articles.read', id=post.id) }}">{{ post.title }}</a></h3>
+        {% if current_user is equalto user %}
+            <a href="{{ url_for('articles.editarticle', id=post.id) }}" class="btn btn-primary pull-right">Modifier</a>
+        {% endif %}
     </div>
     <div class="panel-body">
         {% if post.category.name == 'post' %}
             <p>{{ post.summary }}</p>
         {% elif post.category.name == 'image' %}
-            <img src="{{ url_for('static', filename='uploads/' + post.image_path) }}" alt="">
+            <img class ="image-post" src="{{ url_for('static', filename='uploads/' + post.image_path) }}" alt="">
         {% elif post.category.name == 'video' %}
             <div class="embed-container">
                 <object data="{{ post.link_url }}"></object>

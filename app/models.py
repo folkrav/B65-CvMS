@@ -79,8 +79,6 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.password_hash, password)
 
     def is_administrator(self):
-        import sys
-        print(self.can(PrivilegeGroup.ADMINISTRATOR), file=sys.stderr)
         return self.can(PrivilegeGroup.ADMINISTRATOR)
 
 

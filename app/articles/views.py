@@ -18,6 +18,15 @@ def articlespage(category, page=1):
     return render_template('articles/article.html', posts=posts, title=title)
 
 
+@articles.route('/<int:id>/read')
+def read(id):
+    article = Article.query.get(id)
+    if not article:
+        abort(404)
+
+    return render_template('articles/read.html', article=article)
+
+
 @articles.route('/<string:category>/new', methods=['GET', 'POST'])
 @login_required
 @privileges_required(PrivilegeGroup.CREATOR)
@@ -37,7 +46,8 @@ def newarticle(category):
         article = Article(title=form.title.data,
                           summary=form.summary.data)
         _article_submit(form, article, category)
-        redirect(url_for('users.user', username=current_user.username))
+        flash('Publication créée.', 'success')
+        return redirect(url_for('users.user', username=current_user.username))
 
     return render_template('articles/newarticle.html', form=form, is_text_article=is_text_article)
 
@@ -64,14 +74,13 @@ def editarticle(id):
 
     if article.category.name == "post":
         form.body.data = article.body
-    elif article.category.name == "video":
-        pass
 
     _update_tags(request, article, form)
 
     if form.validate_on_submit():
         _article_submit(form, article, article.category.name)
-        return redirect(url_for('main.index'))
+        flash('Article modifié avec succès.', 'success')
+        return redirect(url_for('users.user', username=current_user.username))
 
     return render_template('articles/newarticle.html', form=form, is_text_article=is_text_article)
 
@@ -90,7 +99,7 @@ def _update_tags(request, article, form):
     form.tags.default = [id for id, title in tags_choices]
     form.tags.process(request.form)
 
-def _article_submit(form, article, category):
+def _article_submit(form, article, category, update=False):
     article.category = (ArticleCategory.query.get(ArticleCategory.categories[category]))
     article.collaborators.append(current_user)
     article.status = (ArticleStatus.query.get(ArticleStatus.PUBLISHED if form.status.data else ArticleStatus.DRAFT))
@@ -110,7 +119,8 @@ def _article_submit(form, article, category):
         params = parse_qs(url.query)
         article.link_url = 'https://www.youtube.com/embed/{0}'.format(params["v"][0])
 
-    db.session.add(article)
+    if not update:
+        db.session.add(article)
     db.session.commit()
 
 def _get_tags_choices(article):
