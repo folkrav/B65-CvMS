@@ -2,9 +2,10 @@ from flask import render_template, url_for, flash, abort, redirect, request
 from flask_login import login_required, current_user
 from . import articles
 from app.models import Article, ArticleStatus, ArticleCategory, PrivilegeGroup, Tag
-from app import POSTS_PER_PAGE, db
+from app import POSTS_PER_PAGE, ALLOWED_EXTENSIONS, UPLOAD_FOLDER, db
 from .forms.articleforms import TextPublicationForm, ImagePublicationForm, LinkPublicationForm
 from decorators import privileges_required
+from werkzeug.utils import secure_filename
 
 
 @articles.route('/<string:category>')
@@ -63,8 +64,6 @@ def editarticle(id):
 
     if article.category.name == "post":
         form.body.data = article.body
-    elif article.category.name == "image":
-        pass
     elif article.category.name == "video":
         pass
 
@@ -72,6 +71,7 @@ def editarticle(id):
 
     if form.validate_on_submit():
         _article_submit(form, article, article.category.name)
+        return redirect(url_for('main.index'))
 
     return render_template('articles/newarticle.html', form=form, is_text_article=is_text_article)
 
@@ -82,7 +82,7 @@ def _update_tags(request, article, form):
     for v in request.form.getlist('tags'):
         if (
                 v and
-                re.match(r'^[A-Za-z0-9_\- ]+$', v) and
+                v.match(r'^[A-Za-z0-9_\- ]+$', v) and
                 not(v in tags_choices_dict)):
             tags_choices_new.append((v, v))
 
@@ -94,12 +94,21 @@ def _article_submit(form, article, category):
     article.category = (ArticleCategory.query.get(ArticleCategory.categories[category]))
     article.collaborators.append(current_user)
     article.status = (ArticleStatus.query.get(ArticleStatus.PUBLISHED if form.status.data else ArticleStatus.DRAFT))
+
     if category == "post":
         article.body = form.body.data
     elif category == "image":
-        pass
+        if _allowed_file(form.body.data.filename):
+            filename = secure_filename(form.body.data.filename)
+            import os
+            file_path = os.path.join(UPLOAD_FOLDER, form.title.data)
+            form.body.data.save(file_path)
+            article.image_path = form.title.data
     elif category == "video":
-        pass
+        from urllib.parse import urlparse, parse_qs
+        url = urlparse(form.body.data)
+        params = parse_qs(url.query)
+        article.link_url = 'https://www.youtube.com/embed/{0}'.format(params["v"][0])
 
     db.session.add(article)
     db.session.commit()
@@ -109,3 +118,7 @@ def _get_tags_choices(article):
     choices = [(t.id, t.name) for t in article.tags]
 
     return (all_choices, choices)
+
+def _allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS

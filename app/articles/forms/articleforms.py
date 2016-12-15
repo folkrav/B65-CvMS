@@ -1,8 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, BooleanField, SubmitField, FileField, HiddenField, SelectMultipleField
+from flask_wtf.file import FileField, FileAllowed, FileRequired
+from wtforms import StringField, BooleanField, SubmitField, HiddenField, SelectMultipleField
 from flask_pagedown.fields import PageDownField
-from wtforms.validators import Length, Required
-from wtforms import ValidationError
+from wtforms.validators import Length, Required, URL
+from app import ALLOWED_EXTENSIONS
 
 
 class NewArticleForm(FlaskForm):
@@ -20,8 +21,11 @@ class TextPublicationForm(NewArticleForm):
 
 
 class ImagePublicationForm(NewArticleForm):
-    body = FileField('Téléverser une image', validators=[Required('Veuillez ajouter une image.')])
+    body = FileField('Téléverser une image', validators=[FileRequired(),
+                                                         FileAllowed(ALLOWED_EXTENSIONS, 'Images seulement!')])
 
 
 class LinkPublicationForm(NewArticleForm):
-    body = StringField('URL', validators=[Length(1,64), Required('Veuillez entrer un titre.')])
+    body = StringField('URL', validators=[Length(1,64),
+                                          Required('Veuillez entrer un titre.'),
+                                          URL(require_tld=True, message="Veuillez entrer un lien valide.")])

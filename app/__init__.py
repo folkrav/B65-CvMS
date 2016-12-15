@@ -8,6 +8,7 @@ from flask_misaka import Misaka
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from config import configs
+import os
 
 
 bootstrap = Bootstrap()
@@ -23,11 +24,14 @@ login.login_view = 'auth.login'
 
 # Global configuration variables
 POSTS_PER_PAGE = 10
+ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif']
+UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'static/uploads/')
 
 def create_app(config_name):
     """Factory method to create a CvMS app instance."""
     app = Flask(__name__)
     app.config.from_object(configs[config_name])
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     configs[config_name].init_app(app)
 
     # Start extensions
