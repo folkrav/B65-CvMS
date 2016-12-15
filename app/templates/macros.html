@@ -5,7 +5,15 @@
         <h3><a href="{{ url_for('articles.editarticle', id=post.id) }}">{{ post.title }}</a></h3>
     </div>
     <div class="panel-body">
-        <p>{{ post.summary }}</p>
+        {% if post.category.name == 'post' %}
+            <p>{{ post.summary }}</p>
+        {% elif post.category.name == 'image' %}
+            <img src="{{ url_for('static', filename='uploads/' + post.image_path) }}" alt="">
+        {% elif post.category.name == 'video' %}
+            <div class="embed-container">
+                <object data="{{ post.link_url }}"></object>
+            </div>
+        {% endif %}
         <div>
             <span class="badge">{{ post.timestamp }}</span>
             <small>
