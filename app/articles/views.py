@@ -28,6 +28,17 @@ def delete(id):
     flash('Article supprimé!', 'success')
     return redirect(url_for('users.user', username=current_user.username))
 
+@articles.route('/<int:id>/publish')
+def publish(id):
+    article = Article.query.get(id)
+    if not article:
+        abort(404)
+    article.status = ArticleStatus.query.get(ArticleStatus.PUBLISHED)
+    db.session.add(article)
+    db.session.commit()
+    flash('Article publié!', 'success')
+    return redirect(url_for('users.user', username=current_user.username))
+
 @articles.route('/<int:id>/read')
 def read(id):
     article = Article.query.get(id)
@@ -46,11 +57,11 @@ def newarticle(category):
 
     CATEGORIES_FORMS = [TextPublicationForm(), ImagePublicationForm(), LinkPublicationForm()]
     form = CATEGORIES_FORMS[ArticleCategory.categories[category] - 1]
-    is_text_article = (category == "articles")
+    is_text_article = (category == "post")
 
-    form.tags.choices = [(str(t.id), t.name) for t in Tag.query.all()]
-    form.tags.default = []
-    form.tags.process(request.form)
+    # form.tags.choices = [(str(t.id), t.name) for t in Tag.query.all()]
+    # form.tags.default = []
+    # form.tags.process(request.form)
 
     if form.validate_on_submit():
         article = Article(title=form.title.data,
@@ -77,37 +88,37 @@ def editarticle(id):
     form.status.data = (article.status == ArticleStatus.query.get(ArticleStatus.PUBLISHED))
     is_text_article = (article.category.name == "post")
 
-    tags_choices_all, tags_choices = _get_tags_choices(article)
-    form.tags.choices = tags_choices_all
-    form.tags.default = [id for id, title in tags_choices]
-    form.tags.process(request.form)
+    # tags_choices_all, tags_choices = _get_tags_choices(article)
+    # form.tags.choices = tags_choices_all
+    # form.tags.default = [id for id, title in tags_choices]
+    # form.tags.process(request.form)
 
     if article.category.name == "post":
         form.body.data = article.body
 
-    _update_tags(request, article, form)
-
     if form.validate_on_submit():
+        # _update_tags(request, article, form)
         _article_submit(form, article, article.category.name, update=True)
         flash('Article modifié avec succès.', 'success')
         return redirect(url_for('users.user', username=current_user.username))
 
     return render_template('articles/newarticle.html', form=form, is_text_article=is_text_article)
 
-def _update_tags(request, article, form):
-    tags_choices_all, tags_choices = _get_tags_choices(article)
-    tags_choices_dict = dict(tags_choices)
-    tags_choices_new = []
-    for v in request.form.getlist('tags'):
-        if (
-                v and
-                v.match(r'^[A-Za-z0-9_\- ]+$', v) and
-                not(v in tags_choices_dict)):
-            tags_choices_new.append((v, v))
-
-    form.tags.choices = tags_choices_all + tags_choices_new
-    form.tags.default = [id for id, title in tags_choices]
-    form.tags.process(request.form)
+# def _update_tags(request, article, form):
+#     tags_choices_all, tags_choices = _get_tags_choices(article)
+#     tags_choices_dict = dict(tags_choices)
+#     tags_choices_new = []
+#     import re
+#     for v in request.form.getlist('tags'):
+#         if (
+#                 v and
+#                 re.match(r'^[A-Za-z0-9_\- ]+$', v) and
+#                 not(v in tags_choices_dict)):
+#             tags_choices_new.append((v, v))
+#
+#     form.tags.choices = tags_choices_all + tags_choices_new
+#     form.tags.default = [id for id, title in tags_choices]
+#     form.tags.process(request.form)
 
 def _article_submit(form, article, category, update=False):
     article.status = (ArticleStatus.query.get(ArticleStatus.PUBLISHED if form.status.data else ArticleStatus.DRAFT))
@@ -130,14 +141,14 @@ def _article_submit(form, article, category, update=False):
     if not update:
         article.category = (ArticleCategory.query.get(ArticleCategory.categories[category]))
         article.collaborators.append(current_user)
-        db.session.add(article)
+    db.session.add(article)
     db.session.commit()
 
-def _get_tags_choices(article):
-    all_choices = [(str(t.id), t.name) for t in Tag.query.all()]
-    choices = [(t.id, t.name) for t in article.tags]
-
-    return (all_choices, choices)
+# def _get_tags_choices(article):
+#     all_choices = [(str(t.id), t.name) for t in Tag.query.all()]
+#     choices = [(t.id, t.name) for t in article.tags]
+#
+#     return (all_choices, choices)
 
 def _allowed_file(filename):
     return '.' in filename and \

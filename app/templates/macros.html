@@ -9,6 +9,9 @@
         {% if current_user is equalto user %}
             <a href="#" class="pull-right" data-href="delete.php?id=23" data-toggle="modal" data-target="#confirm-delete"><span class="glyphicon glyphicon-remove"></span></a>
         {% endif %}
+        {% if post.status.name == "draft" %}
+            <a href="#" class="pull-right" data-href="delete.php?id=23" data-toggle="modal" data-target="#confirm-publish"><span class="glyphicon glyphicon-ok"></span></a>
+        {% endif %}
     </div>
     <div class="panel-body">
         {% if post.category.name == 'post' %}
@@ -44,6 +47,19 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <a class="btn btn-danger btn-ok" href="{{ url_for('articles.delete', id=post.id) }}">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="confirm-publish" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                Publier le post maintenant?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-success btn-ok" href="{{ url_for('articles.publish', id=post.id) }}">Publish</a>
             </div>
         </div>
     </div>
