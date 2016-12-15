@@ -18,6 +18,16 @@ def articlespage(category, page=1):
     return render_template('articles/article.html', posts=posts, title=title)
 
 
+@articles.route('/<int:id>/delete')
+def delete(id):
+    article = Article.query.get(id)
+    if not article:
+        abort(404)
+    db.session.delete(article)
+    db.session.commit()
+    flash('Article supprimé!', 'success')
+    return redirect(url_for('users.user', username=current_user.username))
+
 @articles.route('/<int:id>/read')
 def read(id):
     article = Article.query.get(id)
@@ -78,7 +88,7 @@ def editarticle(id):
     _update_tags(request, article, form)
 
     if form.validate_on_submit():
-        _article_submit(form, article, article.category.name)
+        _article_submit(form, article, article.category.name, update=True)
         flash('Article modifié avec succès.', 'success')
         return redirect(url_for('users.user', username=current_user.username))
 
@@ -100,8 +110,6 @@ def _update_tags(request, article, form):
     form.tags.process(request.form)
 
 def _article_submit(form, article, category, update=False):
-    article.category = (ArticleCategory.query.get(ArticleCategory.categories[category]))
-    article.collaborators.append(current_user)
     article.status = (ArticleStatus.query.get(ArticleStatus.PUBLISHED if form.status.data else ArticleStatus.DRAFT))
 
     if category == "post":
@@ -120,6 +128,8 @@ def _article_submit(form, article, category, update=False):
         article.link_url = 'https://www.youtube.com/embed/{0}'.format(params["v"][0])
 
     if not update:
+        article.category = (ArticleCategory.query.get(ArticleCategory.categories[category]))
+        article.collaborators.append(current_user)
         db.session.add(article)
     db.session.commit()
 

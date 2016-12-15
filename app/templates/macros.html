@@ -2,9 +2,12 @@
 {% for post in posts.items %}
 <div class="panel panel-default col-md-10 col-md-offset-1">
     <div class="panel-heading">
-        <h3><a href="{{ url_for('articles.read', id=post.id) }}">{{ post.title }}</a></h3>
+        <a href="{{ url_for('articles.read', id=post.id) }}">{{ post.title }}</a>
+        {% if current_user is equalto user and post.category.name == 'post' %}
+            <a href="{{ url_for('articles.editarticle', id=post.id) }}" class="pull-right">Modifier</a>
+        {% endif %}
         {% if current_user is equalto user %}
-            <a href="{{ url_for('articles.editarticle', id=post.id) }}" class="btn btn-primary pull-right">Modifier</a>
+            <a href="#" class="pull-right" data-href="delete.php?id=23" data-toggle="modal" data-target="#confirm-delete"><span class="glyphicon glyphicon-remove"></span></a>
         {% endif %}
     </div>
     <div class="panel-body">
@@ -28,6 +31,19 @@
                 {%- for tag in post.tags %}
                 <span class="label label-default">{{ tag.name }}</span>
                 {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                Supprimer le post?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok" href="{{ url_for('articles.delete', id=post.id) }}">Delete</a>
             </div>
         </div>
     </div>
