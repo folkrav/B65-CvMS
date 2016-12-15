@@ -17,6 +17,10 @@ def articlespage(category, page=1):
     posts = posts.order_by(Article.timestamp.desc()).paginate(page, POSTS_PER_PAGE, False)
     return render_template('articles/article.html', posts=posts, title=title)
 
+@articles.route('/search')
+def search(page=1):
+    articles = Article.query.filter(Article.body.match(request.args.get('q'))).order_by(Article.timestamp.desc()).paginate(page, POSTS_PER_PAGE, False)
+    return render_template('articles/article.html', posts=articles, title='Résultats de recherche')
 
 @articles.route('/<int:id>/delete')
 def delete(id):
@@ -122,6 +126,7 @@ def editarticle(id):
 
 def _article_submit(form, article, category, update=False):
     article.status = (ArticleStatus.query.get(ArticleStatus.PUBLISHED if form.status.data else ArticleStatus.DRAFT))
+    article.category = (ArticleCategory.query.get(ArticleCategory.categories[category]))
 
     if category == "post":
         article.body = form.body.data
@@ -139,7 +144,6 @@ def _article_submit(form, article, category, update=False):
         article.link_url = 'https://www.youtube.com/embed/{0}'.format(params["v"][0])
 
     if not update:
-        article.category = (ArticleCategory.query.get(ArticleCategory.categories[category]))
         article.collaborators.append(current_user)
     db.session.add(article)
     db.session.commit()
