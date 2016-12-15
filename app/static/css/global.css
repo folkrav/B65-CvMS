@@ -65,6 +65,9 @@ body {
 .jumbotron-404 {height: 500px;}
 .jumbotron-404 .jumbotron-background {background: #000 url('/static/img/404.jpg') center center;}
 
+.jumbotron-about {height: 250px;}
+.jumbotron-about .jumbotron-background {background: #000 url('/static/img/about.png') center center;}
+
 /* Panels */
 .panel {
     padding: 15px;

@@ -15,7 +15,7 @@
         {% if article.category.name == 'post' %}
             {{ article.body }}
         {% elif article.category.name == 'image' %}
-            <img class ="image-post image-post-full" src="{{ url_for('static', filename='uploads/' + article.image_path) }}" alt="">
+            <img class ="image-post image-post-full" src="{{ url_for('static', filename='uploads/' + article.image_path) }}">
         {% elif article.category.name == 'video' %}
             <div class="embed-container">
                 <object data="{{ article.link_url }}"></object>
