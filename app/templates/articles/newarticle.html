@@ -29,7 +29,7 @@
         {% else %}
             {{ wtf.form_field(form.body) }}
         {% endif %}
-        {{ wtf.form_field(form.tags) }}
+{#        {{ wtf.form_field(form.tags) }}#}
         {{ wtf.form_field(form.status) }}
         {{ wtf.form_field(form.submit) }}
     </form>
@@ -40,4 +40,5 @@
 {{super()}}
 <script src="https://cdn.jsdelivr.net/select2/4.0.3/js/select2.full.min.js"></script>
 <script src="{{url_for('static', filename='js/articles.js')}}"></script>
+{{ pagedown.include_pagedown() }}
 {% endblock %}

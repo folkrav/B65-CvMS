@@ -55,6 +55,8 @@
                                 <li><a href="{{ url_for('auth.login') }}">Se connecter</a></li>
                                 <li><a href="{{ url_for('auth.register') }}">S'enregistrer</a></li>
                             {%- endif %}
+                            <li class="divider"></li>
+                            <li><a href="{{ url_for('main.about') }}">À propos de CvMS</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -62,9 +64,9 @@
                     <li><a href="{{ url_for('articles.articlespage', category='post') }}">Posts</a></li>
                     <li><a href="{{ url_for('articles.articlespage', category='image') }}">Images</a></li>
                     <li><a href="{{ url_for('articles.articlespage', category='video') }}">Videos</a></li>
-                    <li><a href="/tags">Tags</a></li>
+{#                    <li><a href="/tags">Tags</a></li>#}
                 </ul>
-                <form class="navbar-form" role="search">
+                <form class="navbar-form" role="search" action="{{ url_for('articles.search') }}">
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Rechercher" name="q">
                         <div class="input-group-btn">

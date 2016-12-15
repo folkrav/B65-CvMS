@@ -1,0 +1,27 @@
+{%- extends "base.html" %}
+{% block title %}CvMS - Articles{% endblock %}
+
+{% block contents %}
+{{super()}}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        {{ article.summary }}
+        {% for user in article.collaborators %}
+            <a href="{{ url_for('users.user', username=user.username) }}" class="pull-right">{{ user.name }}</a>
+        {% endfor %}
+    </div>
+    <div class="panel-body">
+        <h3>{{ article.summary }}</h3>
+        {% if article.category.name == 'post' %}
+            {{ article.body }}
+        {% elif article.category.name == 'image' %}
+            <img class ="image-post image-post-full" src="{{ url_for('static', filename='uploads/' + article.image_path) }}">
+        {% elif article.category.name == 'video' %}
+            <div class="embed-container">
+                <object data="{{ article.link_url }}"></object>
+            </div>
+        {% endif %}
+
+    </div>
+</div>
+{%- endblock %}

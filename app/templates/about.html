@@ -1,0 +1,59 @@
+{%- extends "base.html" %}
+
+{% block contents %}
+{{super()}}
+    
+<div class="jumbotron jumbotron-about">
+    <div class="jumbotron-background"></div>
+    <h1>À propos</h1>
+    <p>CvMS - CvM Content Management System</p>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">Présentation sommaire</div>
+    <div class="panel-body">
+        <p>Ce projet a été exécuté dans le cadre du cours B65 - Synthèse du programme du DEC intensif en Informatique de Gestion du Cégep du Vieux-Montréal. Ce projet est une première tentative de développement d'un CMS (Content Management System) de type WordPress, réalisé principalement en Python à l'aide du framework Flask.</p>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">Captures d'écran</div>
+    <div class="panel-body">
+        <p>Vue des articles</p>
+        <img class ="image-post image-post-full" src="{{ url_for('static', filename='img/about/screen-articleview.png') }}">
+        <p>Page de l'utilisateur</p>
+        <img class ="image-post image-post-full" src="{{ url_for('static', filename='img/about/screen-user.png') }}">
+        <p>Panneau d'administration</p>
+        <img class ="image-post image-post-full" src="{{ url_for('static', filename='img/about/screen-admin.png') }}">
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">Outils de développement</div>
+    <div class="panel-body">
+        <ul>
+            <li>IDE : PyCharm 2016.3</li>
+            <li>Langages de programmation</li>
+            <ul>
+                <li>Langage principal : Python</li>
+                <li>Framework : Flask</li>
+                <li>Javascript+jQuery pour quelques animations</li>
+            </ul>
+            <li>BD : MySQL</li>
+            <li>Serveur de production</li>
+            <ul>
+                <li>Serveur : Nginx</li>
+                <li>Serveur WSGI : Gunicorn</li>
+                <li>OS : Ubuntu Server 16.04.1</li>
+                <li>Host sur DigitalOcean (VPS)</li>
+            </ul>
+        </ul>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">Coordonnées</div>
+    <div class="panel-body">
+        <ul>
+            <li>Jean-Sébastien Beaulieu</li>
+            <li>E-mail : folkrav [at] gmail [dot] com</li>
+        </ul>
+    </div>
+</div>
+{%- endblock %}

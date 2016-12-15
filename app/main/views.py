@@ -8,3 +8,7 @@ from decorators import privileges_required
 @main.route('/index')
 def index():
     return render_template('index.html')
+
+@main.route('/about')
+def about():
+    return render_template('about.html')
